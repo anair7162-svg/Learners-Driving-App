@@ -14,20 +14,7 @@
 <link rel="stylesheet" href="css/styles.css"/>
 <!-- Lucide icons (MIT, tree-shakeable SVG sprite) -->
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<style>
-  /* Inline icon sizing helper */
-  .ic{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-  .ic svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .ci .ic svg{width:20px;height:20px}
-  .ic-sm svg{width:14px;height:14px}
-  .ic-md svg{width:18px;height:18px}
-  .ic-lg svg{width:22px;height:22px}
-  .ic-xl svg{width:28px;height:28px}
-  /* Nav bar icons */
-  .ni-i .ic svg{width:22px;height:22px}
-  /* prev-icon circle */
-  .prev-icon .ic svg{width:18px;height:18px}
-</style>
+
 </head>
 <body>
 
@@ -189,9 +176,9 @@
 <script src="js/nav.js"></script>
 <script src="js/data.js"></script>
 <script>
-  // Render all Lucide icons after DOM is ready
+
   lucide.createIcons();
-  // Re-render after any dynamic content is injected (sheet, modals etc.)
+
   var _lucideObs=new MutationObserver(function(){lucide.createIcons()});
   _lucideObs.observe(document.body,{childList:true,subtree:true});
 </script>
