@@ -12,6 +12,22 @@
 <link rel="manifest" href="manifest.json"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <link rel="stylesheet" href="css/styles.css"/>
+<!-- Lucide icons (MIT, tree-shakeable SVG sprite) -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* Inline icon sizing helper */
+  .ic{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ic svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .ci .ic svg{width:20px;height:20px}
+  .ic-sm svg{width:14px;height:14px}
+  .ic-md svg{width:18px;height:18px}
+  .ic-lg svg{width:22px;height:22px}
+  .ic-xl svg{width:28px;height:28px}
+  /* Nav bar icons */
+  .ni-i .ic svg{width:22px;height:22px}
+  /* prev-icon circle */
+  .prev-icon .ic svg{width:18px;height:18px}
+</style>
 </head>
 <body>
 
@@ -40,18 +56,21 @@
   <button class="btn ba bf" id="su-go" style="margin-top:4px">Create Account</button>
 </div>
 </div>
-<div style="margin-top:18px;font-size:11px;color:var(--t3)">Secured with Supabase</div>
+<div style="margin-top:18px;font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px;justify-content:center">
+  <i data-lucide="shield-check" style="width:13px;height:13px;stroke:var(--t3)"></i> Secured with Supabase
+</div>
 </div>
 
 <!-- APP -->
 <div id="app">
 <!-- MAP -->
 <div class="scr scr-map on" id="s-map">
-  <div class="mtop"><div class="sb"><input type="text" id="sinp" placeholder="Where to?" autocomplete="off"/><button class="sb-go" id="sbtn">&#x2192;</button></div><button class="lb" id="lbtn">&#x25CE;</button><div class="ac-drop" id="ac-drop"></div></div>
+  <div class="mtop"><div class="sb"><input type="text" id="sinp" placeholder="Where to?" autocomplete="off"/><button class="sb-go" id="sbtn"><i data-lucide="arrow-right" style="width:18px;height:18px;stroke:var(--bg0)"></i></button></div><button class="lb" id="lbtn"><i data-lucide="locate-fixed" style="width:20px;height:20px;stroke:var(--t2)"></i></button><div class="ac-drop" id="ac-drop"></div></div>
+
   <!-- Preview bar -->
   <div class="prev-bar" id="prev-bar">
     <div class="prev-top">
-      <div class="prev-icon">👁️</div>
+      <div class="prev-icon"><span class="ic"><i data-lucide="eye" style="width:18px;height:18px;stroke:var(--p)"></i></span></div>
       <div class="prev-info">
         <div class="prev-title">Route Preview</div>
         <div class="prev-sub" id="prev-sub">Fly along your route</div>
@@ -64,68 +83,97 @@
       <button class="bg" id="prev-x" style="font-size:20px">✕</button>
     </div>
     <div class="prev-controls">
-      <button class="bg" id="prev-pp" style="font-size:18px">⏸</button>
+      <button class="bg" id="prev-pp"><i data-lucide="pause" style="width:18px;height:18px;stroke:var(--t1)"></i></button>
       <div class="prev-prog" id="prev-prog"><div class="prev-prog-fill" id="prev-fill" style="width:0%"></div></div>
     </div>
   </div>
+
   <!-- Nav panel -->
   <div class="navp" id="navp">
     <div class="nav-top"><div class="nav-dir" id="nd">&#x2191;</div><div class="nav-info"><div class="nav-dist" id="ndist">--</div><div class="nav-road" id="nroad">--</div><div class="nav-next" id="nnext"></div></div><button class="bg" id="nx" style="color:#fff;font-size:22px">&#x2715;</button></div>
-    <div class="nav-eta"><div class="nav-eta-item">⏱ <span class="nav-eta-val" id="neta">--</span> min</div><div class="nav-eta-item">📏 <span class="nav-eta-val" id="nkm">--</span> km</div><div class="nav-eta-item">🕐 ETA <span class="nav-eta-val" id="neta-clock">--</span></div></div>
+    <div class="nav-eta">
+      <div class="nav-eta-item"><i data-lucide="timer" style="width:13px;height:13px;stroke:var(--t2)"></i> <span class="nav-eta-val" id="neta">--</span> min</div>
+      <div class="nav-eta-item"><i data-lucide="ruler" style="width:13px;height:13px;stroke:var(--t2)"></i> <span class="nav-eta-val" id="nkm">--</span> km</div>
+      <div class="nav-eta-item"><i data-lucide="clock" style="width:13px;height:13px;stroke:var(--t2)"></i> ETA <span class="nav-eta-val" id="neta-clock">--</span></div>
+    </div>
     <div class="nav-prog"><div class="nav-prog-bar" id="nav-prog-bar" style="width:0%"></div></div>
   </div>
+
   <div class="sorb" id="sorb"><div class="sn" id="snum">0</div><div class="su">km/h</div><div class="sorb-acc" id="sorb-acc"></div></div>
   <div id="map"></div>
-  <div class="nav-bar" id="nbar"><button class="btn ba" style="flex:1" id="nlog">Log This Drive</button><button class="btn bs" style="flex:none;padding:12px 14px" id="nstop">End Drive</button></div>
+  <div class="nav-bar" id="nbar">
+    <button class="btn ba" style="flex:1" id="nlog"><i data-lucide="notebook-pen" style="width:15px;height:15px;stroke:var(--bg0)"></i> Log This Drive</button>
+    <button class="btn bs" style="flex:none;padding:12px 14px" id="nstop"><i data-lucide="square" style="width:15px;height:15px;stroke:var(--t1)"></i> End</button>
+  </div>
   <div class="msh" id="msh"><button class="sh-toggle" id="sh-tog">▾</button><div class="sc" id="sh"></div></div>
 </div>
+
 <!-- WIZARD -->
 <div class="wov" id="wov"><div class="wp" id="wp"></div></div>
+
 <!-- LOGBOOK -->
 <div class="scr" id="s-log">
   <div class="ph"><div class="pt">Logbook</div><div class="ps">NSW 120-Hour Tracker</div></div>
   <div class="rw"><svg viewBox="0 0 180 180"><circle class="trk" cx="90" cy="90" r="70"/><circle class="fd" id="rd" cx="90" cy="90" r="70" stroke-dasharray="440" stroke-dashoffset="440"/><circle class="fn" id="rn" cx="90" cy="90" r="70" stroke-dasharray="440" stroke-dashoffset="440"/></svg><div class="rc"><div class="rb" id="th">0</div><div class="rsb">of 120 hours</div></div></div>
   <div class="hbs" id="hbs"></div>
-  <div style="padding:0 14px;margin-bottom:6px"><button class="btn ba bf" id="adlog">+ Log Drive Session</button></div>
+  <div style="padding:0 14px;margin-bottom:6px"><button class="btn ba bf" id="adlog"><i data-lucide="plus" style="width:15px;height:15px;stroke:var(--bg0)"></i> Log Drive Session</button></div>
   <div class="st">Recent</div><div id="llist"></div>
 </div>
+
 <!-- ROUTES -->
 <div class="scr" id="s-rt">
   <div class="ph"><div class="pt">Routes</div><div class="ps">Your saved learner routes</div></div>
   <div id="rlist"></div>
-  <div class="empty" id="nort"><div class="ei">&#x1F6E3;</div><div style="font-size:14px;font-weight:600;color:var(--t2)">No routes yet</div><div style="font-size:11px;margin-top:4px">Build your first from the map tab</div></div>
+  <div class="empty" id="nort">
+    <div class="ei"><i data-lucide="route" style="width:44px;height:44px;stroke:var(--t3)"></i></div>
+    <div style="font-size:14px;font-weight:600;color:var(--t2)">No routes yet</div>
+    <div style="font-size:11px;margin-top:4px">Build your first from the map tab</div>
+  </div>
 </div>
+
 <!-- PROFILE -->
 <div class="scr" id="s-prof">
   <div class="ph"><div class="pt">Profile</div><div class="ps">Your driver details</div></div>
   <div class="pav" id="pav" title="Tap to change photo" style="cursor:pointer;overflow:hidden">L</div>
   <input type="file" id="pfp-input" accept="image/*" style="display:none"/>
   <div class="pnm" id="pnm">Learner</div><div class="pli" id="pli">NSW Learner</div>
-  <div class="sgrid"><div class="sbox"><div class="sv" id="xrt">0</div><div class="sl">Routes</div></div><div class="sbox"><div class="sv" id="xkm">0</div><div class="sl">km</div></div><div class="sbox"><div class="sv" id="xhr">0</div><div class="sl">Hours</div></div></div>
+  <div class="sgrid">
+    <div class="sbox"><div class="sv" id="xrt">0</div><div class="sl">Routes</div></div>
+    <div class="sbox"><div class="sv" id="xkm">0</div><div class="sl">km</div></div>
+    <div class="sbox"><div class="sv" id="xhr">0</div><div class="sl">Hours</div></div>
+  </div>
   <div class="st">Account</div>
-  <div class="card" id="cedit"><div class="cr"><div class="ci" style="background:var(--accg);color:var(--acc)">✏</div><div class="cb"><div class="ct">Edit Profile</div><div class="cs">Name, licence, supervisor</div></div><div style="color:var(--t3)">›</div></div></div>
-  <div class="card" id="ctheme"><div class="cr"><div class="ci" style="background:var(--ig);color:var(--i)">🎨</div><div class="cb"><div class="ct" id="theme-label">Dark Mode</div><div class="cs">Toggle light/dark appearance</div></div><div style="color:var(--t3)">›</div></div></div>
-  <div class="card" id="cexp"><div class="cr"><div class="ci" style="background:var(--ig);color:var(--i)">📤</div><div class="cb"><div class="ct">Export Logbook</div><div class="cs">Download JSON backup</div></div><div style="color:var(--t3)">›</div></div></div>
-  <div class="card" id="cout"><div class="cr"><div class="ci" style="background:var(--pg);color:var(--p)">🚪</div><div class="cb"><div class="ct">Sign Out</div></div><div style="color:var(--t3)">›</div></div></div>
+  <div class="card" id="cedit"><div class="cr"><div class="ci" style="background:var(--accg);color:var(--acc)"><span class="ic"><i data-lucide="pencil" style="width:20px;height:20px;stroke:var(--acc)"></i></span></div><div class="cb"><div class="ct">Edit Profile</div><div class="cs">Name, licence, supervisor</div></div><div style="color:var(--t3)">›</div></div></div>
+  <div class="card" id="ctheme"><div class="cr"><div class="ci" style="background:var(--ig);color:var(--i)"><span class="ic"><i data-lucide="sun-moon" style="width:20px;height:20px;stroke:var(--i)"></i></span></div><div class="cb"><div class="ct" id="theme-label">Dark Mode</div><div class="cs">Toggle light/dark appearance</div></div><div style="color:var(--t3)">›</div></div></div>
+  <div class="card" id="cexp"><div class="cr"><div class="ci" style="background:var(--ig);color:var(--i)"><span class="ic"><i data-lucide="download" style="width:20px;height:20px;stroke:var(--i)"></i></span></div><div class="cb"><div class="ct">Export Logbook</div><div class="cs">Download JSON backup</div></div><div style="color:var(--t3)">›</div></div></div>
+  <div class="card" id="cout"><div class="cr"><div class="ci" style="background:var(--pg);color:var(--p)"><span class="ic"><i data-lucide="log-out" style="width:20px;height:20px;stroke:var(--p)"></i></span></div><div class="cb"><div class="ct">Sign Out</div></div><div style="color:var(--t3)">›</div></div></div>
   <div style="text-align:center;padding:20px 18px 36px;font-size:11px;color:var(--t3)">elearn.sio v2.0</div>
 </div>
+
 <nav class="bnav" id="bnav"></nav>
+
 <!-- LOG MODAL -->
-<div class="modal" id="ml"><div class="mbox"><h3>📝 Log Drive</h3>
-<div class="fg"><label class="fl">Date</label><input type="date" class="fi" id="ml-dt"/></div>
-<div class="frow"><div class="fg"><label class="fl">Duration (min)</label><input type="number" class="fi" id="ml-du" placeholder="60" min="1"/></div><div class="fg"><label class="fl">Time</label><select class="fi" id="ml-td"><option value="day">Day</option><option value="night">Night</option></select></div></div>
-<div class="fg"><label class="fl">Roads</label><div class="chg" id="ml-ch"></div></div>
-<div class="fg"><label class="fl">Supervisor</label><input type="text" class="fi" id="ml-sp"/></div>
-<div class="fg"><label class="fl">Notes</label><textarea class="fi" id="ml-nt" rows="2" placeholder="How did it go?"></textarea></div>
-<div style="display:flex;gap:6px;margin-top:6px"><button class="btn bs" style="flex:1" id="ml-x">Cancel</button><button class="btn ba" style="flex:1" id="ml-ok">Save</button></div>
+<div class="modal" id="ml"><div class="mbox">
+  <h3><i data-lucide="notebook-pen" style="width:18px;height:18px;stroke:var(--acc)"></i> Log Drive</h3>
+  <div class="fg"><label class="fl">Date</label><input type="date" class="fi" id="ml-dt"/></div>
+  <div class="frow">
+    <div class="fg"><label class="fl">Duration (min)</label><input type="number" class="fi" id="ml-du" placeholder="60" min="1"/></div>
+    <div class="fg"><label class="fl">Time</label><select class="fi" id="ml-td"><option value="day">Day</option><option value="night">Night</option></select></div>
+  </div>
+  <div class="fg"><label class="fl">Roads</label><div class="chg" id="ml-ch"></div></div>
+  <div class="fg"><label class="fl">Supervisor</label><input type="text" class="fi" id="ml-sp"/></div>
+  <div class="fg"><label class="fl">Notes</label><textarea class="fi" id="ml-nt" rows="2" placeholder="How did it go?"></textarea></div>
+  <div style="display:flex;gap:6px;margin-top:6px"><button class="btn bs" style="flex:1" id="ml-x">Cancel</button><button class="btn ba" style="flex:1" id="ml-ok">Save</button></div>
 </div></div>
+
 <!-- EDIT MODAL -->
-<div class="modal" id="mp"><div class="mbox"><h3>✏ Edit Profile</h3>
-<div class="fg"><label class="fl">Name</label><input type="text" class="fi" id="mp-nm"/></div>
-<div class="fg"><label class="fl">Licence #</label><input type="text" class="fi" id="mp-li"/></div>
-<div class="fg"><label class="fl">Licence Type</label><select class="fi" id="mp-lt"><option value="L">Learner</option><option value="P1">P1 Red Provisional</option><option value="P2">P2 Green Provisional</option></select></div>
-<div class="fg"><label class="fl">Supervisor</label><input type="text" class="fi" id="mp-sp"/></div>
-<div style="display:flex;gap:6px;margin-top:6px"><button class="btn bs" style="flex:1" id="mp-x">Cancel</button><button class="btn ba" style="flex:1" id="mp-ok">Save</button></div>
+<div class="modal" id="mp"><div class="mbox">
+  <h3><i data-lucide="pencil" style="width:18px;height:18px;stroke:var(--acc)"></i> Edit Profile</h3>
+  <div class="fg"><label class="fl">Name</label><input type="text" class="fi" id="mp-nm"/></div>
+  <div class="fg"><label class="fl">Licence #</label><input type="text" class="fi" id="mp-li"/></div>
+  <div class="fg"><label class="fl">Licence Type</label><select class="fi" id="mp-lt"><option value="L">Learner</option><option value="P1">P1 Red Provisional</option><option value="P2">P2 Green Provisional</option></select></div>
+  <div class="fg"><label class="fl">Supervisor</label><input type="text" class="fi" id="mp-sp"/></div>
+  <div style="display:flex;gap:6px;margin-top:6px"><button class="btn bs" style="flex:1" id="mp-x">Cancel</button><button class="btn ba" style="flex:1" id="mp-ok">Save</button></div>
 </div></div>
 </div>
 
@@ -140,5 +188,12 @@
 <script src="js/routes.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/data.js"></script>
+<script>
+  // Render all Lucide icons after DOM is ready
+  lucide.createIcons();
+  // Re-render after any dynamic content is injected (sheet, modals etc.)
+  var _lucideObs=new MutationObserver(function(){lucide.createIcons()});
+  _lucideObs.observe(document.body,{childList:true,subtree:true});
+</script>
 </body>
 </html>
